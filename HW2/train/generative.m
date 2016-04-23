@@ -16,22 +16,21 @@ tot_num_data = sum(tot_num_class);
 sigma = zeros(3,3);
 for i=1:1:tot_num_data
 	idx = find(data.T_train(i,:)==1);
-	row_vec = data.Phi_train(i,:) - mean_class(idx);
+	row_vec = data.Phi_train(i,:) - mean_class(idx,:);
 	sigma += row_vec' * row_vec;
 endfor
 sigma /= tot_num_data;
 
 for i=1:1:num_class
+	w(:,i) = inv(sigma)*mean_class(i,:)';
 	w0(i) = (-1/2)*mean_class(i,:)*inv(sigma)*mean_class(i,:)' + log(1/num_class);
 endfor
 	
 for i=1:1:tot_num_data
 	for j=1:1:num_class
-		row_vec = data.Phi_train(i,:) - mean_class(j,:);
-		predict_vec(i,j) = power(2*pi,-3/2)*power(det(sigma),-1/2)...
-											 *exp((-1/2)*row_vec*inv(sigma)*row_vec') + w0(j);
+		a(j) = exp(data.Phi_train(i,:)*w(:,j) + w0(j));
 	endfor
-	predict_mtx(i,:) = all(predict_vec(i,:)==max(predict_vec(i,:)),1);
+	predict_mtx(i,:) = all(a==max(a),1);
 endfor
 
 correct_mtx = data.T_train - predict_mtx;
