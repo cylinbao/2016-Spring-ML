@@ -22,19 +22,20 @@ endfor
 sigma /= tot_num_data;
 
 for i=1:1:num_class
-	w0(i) = (-1/2)*mean_class(i,:)*inv(sigma)*mean_class(i,:)' + log(1/num_class);
+	w_g(:,i) = inv(sigma)*mean_class(i,:)';
+	w0_g(i) = (-1/2)*mean_class(i,:)*inv(sigma)*mean_class(i,:)' + log(1/num_class);
 endfor
 	
 for i=1:1:tot_num_data
 	for j=1:1:num_class
-		row_vec = data.Phi_train(i,:) - mean_class(j,:);
-		predict_vec(j) = power(2*pi,-3/2)*power(det(sigma),-1/2)...
-											 *exp((-1/2)*row_vec*inv(sigma)*row_vec') + w0(j);
+		a(j) = exp(data.Phi_train(i,:)*w_g(:,j) + w0_g(j));
 	endfor
-	predict_mtx(i,:) = all(predict_vec==max(predict_vec),1);
+	predict_mtx(i,:) = all(a==max(a),1);
 endfor
 
 correct_mtx = data.T_train - predict_mtx;
 correct_vec = all(correct_mtx==0,2);
 correct_num = sum(correct_vec);
 error_rate = (tot_num_data - correct_num)/ tot_num_data * 100;
+
+save -append -mat "./train_result.mat" w_g w0_g
