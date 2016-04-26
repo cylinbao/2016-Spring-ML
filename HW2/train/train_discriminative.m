@@ -1,30 +1,29 @@
 clear;
 
 alpha = 0.275;
+epsilon = 20;
 
 data = load('../data/Training_data_hw2.mat');
 result = load('./train_result.mat');
 
 % calculate how many classes: 4 in this case
-num_class = size(data.T_train,2);
+num_class = size(data.unT_train,2);
 % 4 X 3 matrix, summation of data by each class
-sum_by_class = data.T_train' * data.Phi_train;
+sum_by_class = data.unT_train' * data.unPhi_train;
 % 1 X 4 vector, calculate how much data by each class
-tot_num_class = sum(data.T_train(:,1:num_class));
+tot_num_class = sum(data.unT_train(:,1:num_class));
 % calculate the mean of each class
 mean_class = sum_by_class ./ tot_num_class';
 % Total number of data
 tot_num_data = sum(tot_num_class);
 
-phi = data.Phi_train;
+phi = data.unPhi_train;
 phi(:,end+1) = 1;
 
 % calculate the dimension of the Phi
 dim_phi = size(phi,2);
 
 % get w from the result of generative method
-%w = result.w_g;
-%w(end+1,:) = 1;
 w = 2*ones(dim_phi);
 
 % initialize y
@@ -37,15 +36,7 @@ end
 y ./= sum(y,2);
 
 % calculate the initial cross-entropy error function
-e = -sum(sum(data.T_train .* log(y),2))
-
-% calculate the initial error rate
-%predict_mtx = all(y==max(y,[],2),3);
-%
-%correct_mtx = data.T_train - predict_mtx;
-%correct_vec = all(correct_mtx==0,2);
-%correct_num = sum(correct_vec);
-%error_rate = (tot_num_data - correct_num)/ tot_num_data * 100
+e = -sum(sum(data.unT_train .* log(y),2))
 
 % transfer w to 16x1 vector (w_d)
 for i=1:1:num_class
@@ -56,12 +47,12 @@ I = diag(ones(num_class,1));
 
 % start IRLS algorithm with Newton-Raphson method
 e_last = 0;
-while abs(e_last - e) > 30
+while abs(e_last - e) > epsilon
 	e_last = e;
 
 	for i=1:1:num_class
 		idx = (i-1)*dim_phi + 1;
-		dE(idx:idx+dim_phi-1,1) = sum((y(:,i) - data.T_train(:,i)) .* phi);
+		dE(idx:idx+dim_phi-1,1) = sum((y(:,i) - data.unT_train(:,i)) .* phi);
 	end
 
 	% build hessian matrix H
@@ -94,11 +85,11 @@ while abs(e_last - e) > 30
 	% normalize y to real probability
 	y ./= sum(y,2);
 	
-	e = -sum(sum(data.T_train .* log(y),2))
+	e = -sum(sum(data.unT_train .* log(y),2))
 
 	predict_mtx = all(y==max(y,[],2),3);
 	
-	correct_mtx = data.T_train - predict_mtx;
+	correct_mtx = data.unT_train - predict_mtx;
 	correct_vec = all(correct_mtx==0,2);
 	correct_num = sum(correct_vec);
 	error_rate = (tot_num_data - correct_num)/ tot_num_data * 100

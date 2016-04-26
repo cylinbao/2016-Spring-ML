@@ -5,8 +5,6 @@ train_result = load('../train/train_result.mat');
 
 % calculate how many classes: 4 in this case
 num_class = 4;
-% Total number of data
-tot_num_data = size(data.Phi_test,1);
 
 boundary_precision = 0.565;
 
