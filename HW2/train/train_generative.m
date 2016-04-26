@@ -36,7 +36,7 @@ endfor
 correct_mtx = data.T_train - predict_mtx;
 correct_vec = all(correct_mtx==0,2);
 correct_num = sum(correct_vec);
-error_rate = (tot_num_data - correct_num)/ tot_num_data * 100;
+error_rate = (tot_num_data - correct_num)/ tot_num_data * 100
 
 class_1 = predict_mtx(:,1) .* data.Phi_train;
 class_1(all(class_1==0,2),:) = [];
