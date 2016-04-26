@@ -95,6 +95,30 @@ while abs(e_last - e) > epsilon
 	error_rate = (tot_num_data - correct_num)/ tot_num_data * 100
 end
 
+% Total number of data
+tot_num_data = size(data.Phi_train,1);
+
+phi = data.Phi_train;
+phi(:,end+1) = 1;
+
+	% update y from new w_d
+	for j=1:1:tot_num_data
+		for i=1:1:num_class
+			y(j,i) = exp(phi(j,:)*w(:,i));
+		end
+	end
+	% normalize y to real probability
+	y ./= sum(y,2);
+	
+	e = -sum(sum(data.T_train .* log(y),2))
+
+	predict_mtx = all(y==max(y,[],2),3);
+	
+	correct_mtx = data.T_train - predict_mtx;
+	correct_vec = all(correct_mtx==0,2);
+	correct_num = sum(correct_vec);
+	error_rate = (tot_num_data - correct_num)/ tot_num_data * 100
+
 class_1 = predict_mtx(:,1) .* phi;
 class_1(all(class_1==0,2),:) = [];
 class_2 = predict_mtx(:,2) .* phi;
