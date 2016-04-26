@@ -16,10 +16,10 @@ for i=1:1:tot_num_data
 	for j=1:1:num_class
 		a(j) = exp(data.Phi_test(i,:)*w(:,j) + w0(j));
 	endfor
-	T_test_un(i,:) = all(a==max(a),1);
+	T_test(i,:) = all(a==max(a),1);
 endfor
 
-save -append -mat "./GenMod_T_test.mat" T_test_un;
+save -append -mat "./GenMod_T_test_un.mat" T_test;
 
 w_d = train_result.w_d;
 phi = data.Phi_test;
@@ -37,7 +37,7 @@ for i=1:1:tot_num_data
 	for j=1:1:num_class
 		a(j) = exp(phi(i,:)*w_t(:,j));
 	endfor
-	T_test_un(i,:) = all(a==max(a),1);
+	T_test(i,:) = all(a==max(a),1);
 endfor
 
-save -append -mat "./DisMod_T_test.mat" T_test_un;
+save -append -mat "./DisMod_T_test_un.mat" T_test;
