@@ -18,9 +18,6 @@ mean_class = sum_by_class ./ tot_num_class';
 # Total number of data
 tot_num_data = sum(tot_num_class);
 
-phi = data.Phi_train;
-phi(:,end+1) = 1;
-
 # get w from the result of generative method
 w = result.w_g;
 # w(end+1,:) = 1;
