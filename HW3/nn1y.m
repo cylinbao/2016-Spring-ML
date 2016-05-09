@@ -11,7 +11,7 @@ t =  train_data.T_train;                % t is an label
 
 %% Parameter 
 %eta = 0.00001;     % learning rate
-eta = 0.25;     % learning rate
+eta = 0.75;     % learning rate
 size_0 = size(x,2);           % size of layer 1 (input-layer)
 size_1 = 25;            % size of layer 2 (hidden-layer)
 size_2 = 4;            % size of layer 3 (output-layer)
@@ -58,3 +58,5 @@ out = Softmax_ForProp(a_2);
 p = Do_prediction(out);
 acc = Accuracy(p, t)
 end
+
+save -append -mat "./OneHidNN_W.mat" W_01 W_12 b_01 b_12
