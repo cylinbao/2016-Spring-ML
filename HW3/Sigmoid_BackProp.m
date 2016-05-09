@@ -1,6 +1,5 @@
 function [dEdx] = Sigmoid_BackProp(dEdy,x)
-%%%%%%%%%% Let's do it!!! %%%%%%%%%%%
-%                                   %
-%                                   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+dEdx = x.*(1.-x).*dEdy;
+
 end
