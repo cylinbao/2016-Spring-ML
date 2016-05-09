@@ -3,8 +3,7 @@ close all;
 
 train_data = load('Training_data_hw3.mat');
 
-threshold = 0.01;
-ite_limit = 5000;
+ite_limit = 1000;
 
 %% Input setting
 x = train_data.X_train;                 % x is an input data sample
@@ -13,8 +12,8 @@ t =  train_data.T_train;                % t is an label
 %% Parameter 
 %eta = 0.00001;     % learning rate
 eta = 0.25;     % learning rate
-size_0 =size(x,2);           % size of layer 1 (input-layer)
-size_1 = 5;            % size of layer 2 (hidden-layer)
+size_0 = size(x,2);           % size of layer 1 (input-layer)
+size_1 = 25;            % size of layer 2 (hidden-layer)
 size_2 = 4;            % size of layer 3 (output-layer)
 
 %% Initialization
@@ -33,8 +32,9 @@ ite = 1
 %% calculate the accuracy
 p = Do_prediction(out);
 acc = Accuracy(p, t)
+old_acc = 0;
 
-while ite <= 1000 
+while ite < ite_limit
 ite += 1
 %% Backward-propagation
 [dEda_2]                 = Softmax_BackProp(out,t);
@@ -56,8 +56,5 @@ out = Softmax_ForProp(a_2);
 
 %% calculate the accuracy
 p = Do_prediction(out);
-%acc = Accuracy(p, t)
-c_mtx = t - p;
-c_num = sum(all(c_mtx==0,2)); 
-acc = c_num / size(t,1) * 100
+acc = Accuracy(p, t)
 end

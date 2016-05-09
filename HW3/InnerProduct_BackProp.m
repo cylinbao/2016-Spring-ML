@@ -4,9 +4,7 @@ dEdx = W*dEdy';
 dEdx = dEdx';
 
 dEdb = dEdy*b;
-%dEdb = sum(dEdb); 
 dEdb = sum(dEdb) / size(dEdb,1);
 
-%dEdW = x'*dEdy;
 dEdW = x'*dEdy / size(dEdy,1);
 end
