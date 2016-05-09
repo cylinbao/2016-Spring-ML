@@ -1,6 +1,5 @@
 function [dEdx] = Rectified_BackProp(dEdy,x)
-%%%%%%%%%% Let's do it!!! %%%%%%%%%%%
-%                                   %
-%                                   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+dEdx = (x > 0).*dEdy;
+
 end
