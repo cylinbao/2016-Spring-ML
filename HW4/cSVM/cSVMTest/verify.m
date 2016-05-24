@@ -1,6 +1,7 @@
 clear;
 
 pkg load image;
+addpath '/home/myislin/Spring_2016/ML/libsvm/matlab';
 
 models = load ('./cSVM_trainedModels_n100.mat');
 train_data = load ('../../Training_data_hw4.mat');
