@@ -11,7 +11,7 @@ t_test = test_data.T_test;
 
 exFe = fe(x);
 
-nTrees = 1000;
+nTrees = 100;
 randomForest = TreeBagger(nTrees, exFe, t, 'FBoot', 0.5,...
                           'MinLeaf', 1000, 'Method', 'classification');
 
