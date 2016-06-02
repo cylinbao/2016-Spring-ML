@@ -1,5 +1,13 @@
 %%%%%%%%%% Random Forest %%%%%%%%%%
-clear all;
+function [acc] = randomForest(feature_size,nTrees,minSample,fracSample)
+
+% parameters for feature extrator
+tot_class = 10;
+%feature_size = 5;
+% parameters for random forest
+%nTrees = 100;
+%minSample = 1000;
+%fracSample = 0.5;
 
 data = load('./Training_data_hw5.mat');
 test_data = load('./Test_data4_hw5.mat');
@@ -9,13 +17,14 @@ x_test = test_data.X_test;
 t = data.T_train;
 t_test = test_data.T_test;
 
-exFe = fe(x);
+exFe = fe(x,tot_class,feature_size);
 
-nTrees = 100;
-randomForest = TreeBagger(nTrees, exFe, t, 'FBoot', 0.5,...
-                          'MinLeaf', 1000, 'Method', 'classification');
+rf = TreeBagger(nTrees, exFe, t, 'FBoot', fracSample,...
+                          'MinLeaf', minSample, 'Method', 'classification');
 
 %view(randomForest.Trees{1},'Mode','graph');
-exFe_test = fe(x_test);
-p_test = str2double(randomForest.predict(exFe_test));
-acc = Accuracy(p_test, t_test)
+exFe_test = fe(x_test,tot_class,feature_size);
+p_test = str2double(rf.predict(exFe_test));
+acc = Accuracy(p_test, t_test);
+
+end
