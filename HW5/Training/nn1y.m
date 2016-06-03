@@ -6,7 +6,7 @@ train_data = load('../Training_data_hw5.mat');
 ite_limit = 1000;
 theta = 0.2;
 tot_class = 10;
-feature_size = 10;
+feature_size = 15;
 
 %% Input setting
 x = train_data.X_train; % x is an input data sample
@@ -15,7 +15,7 @@ t = labelize(c, tot_class); %transfer class into bit matrix
 
 %% Parameter 
 %eta = 0.00001;     % learning rate
-eta = 0.5;     % learning rate
+eta = 1.5;     % learning rate
 size_0 = size(x,2);           % size of layer 1 (input-layer)
 size_1 = feature_size;            % size of layer 2 (hidden-layer)
 size_2 = tot_class;            % size of layer 3 (output-layer)
